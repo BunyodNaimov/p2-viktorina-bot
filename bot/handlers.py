@@ -25,5 +25,6 @@ async def start_command(message: Message):
 
 @router.message(F.text == "Level 1️⃣")
 async def level_1(message: Message):
-    question = f"{random.randint(1, 11)} {random.choice(['+', '-', '*'])} {random.randint(1, 11)}"
+    question = (f"{random.randint(1, 11)} {random.choice(['+', '-', '*'])}"
+                f" {random.randint(1, 11)}")
     await message.answer(text=f"SAVOL: {question} = ?")
