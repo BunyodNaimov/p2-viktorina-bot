@@ -9,6 +9,12 @@ levels_btn = ReplyKeyboardMarkup(
 
 stop_btn = ReplyKeyboardMarkup(
     keyboard=[
-        [KeyboardButton(text="STOP")],
+        [KeyboardButton(text="🛑STOP")],
+    ], resize_keyboard=True
+)
+
+start_btn = ReplyKeyboardMarkup(
+    keyboard=[
+        [KeyboardButton(text="🎲Boshlash")],
     ], resize_keyboard=True
 )

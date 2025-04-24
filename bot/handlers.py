@@ -7,7 +7,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, FSInputFile, MessageAutoDeleteTimerChanged
 
 from states import LevelState
-from keyboards import levels_btn, stop_btn
+from keyboards import levels_btn, stop_btn, start_btn
 
 router = Router()
 
@@ -31,6 +31,9 @@ async def start_command(message: Message):
                                                     f"sizga bir nechta savollar berib "
                                                     f"bilimingizni tekshirib beramiz!", reply_markup=levels_btn)
 
+@router.message(F.text == "🎲Boshlash")
+async def start_game(message: Message):
+    await message.answer("O'yin qaytadan boshlandi!", reply_markup=levels_btn)
 
 @router.message(F.text == "Level 1️⃣")
 async def level_1(message: Message, state: FSMContext):
@@ -59,17 +62,22 @@ async def process_answer(message: Message, state: FSMContext):
     correct = data.get("correct", 0)
     incorrect = data.get("incorrect", 0)
     level = data.get("level")
-    if message.text == "STOP":
-        # Stop button bosilganda slayga o'xshash xabar qaytsin
-        pass
+    if message.text == "🛑STOP":
+        text = (f"{level}\n"
+                f"Savollar soni: {correct + incorrect}\n"
+                f"✅To'g'ri javoblar: {correct}\n"
+                f"❌Noto'g'ri javoblar: {incorrect}\n")
+        await message.answer(text, reply_markup=start_btn)
+        await state.clear()
+        return
     try:
         user_answer = int(message.text)
         if user_answer == correct_answer:
             correct += 1
-            await message.answer("Javob to'g'ri!")
+            await message.answer("✅Javob to'g'ri!")
         else:
             incorrect += 1
-            await message.answer("Javob noto'g'ri!")
+            await message.answer(f"❌Javob noto'g'ri!\n✅To'g'ri javob: {correct_answer}")
     except ValueError:
         await message.answer("Iltimos raqam kiriting")
 
