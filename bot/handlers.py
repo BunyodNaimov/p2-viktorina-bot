@@ -47,14 +47,6 @@ async def level_1(message: Message, state: FSMContext):
 
 
 
-
-
-
-
-
-
-
-
 @router.message(StateFilter(LevelState.javob))
 async def process_answer(message: Message, state: FSMContext):
     data = await state.get_data()
